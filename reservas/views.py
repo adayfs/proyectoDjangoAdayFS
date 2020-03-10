@@ -2,6 +2,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import Template,Context
+from django.template import loader
 from reservas.models import Habitacion
 from reservas.models import Reserva
 from reservas.models import Cliente
@@ -12,22 +13,12 @@ from random import randint
 
 # Create your views here.
 def reservas (request):
-    #carga la plantilla
-    doc_externo=open("C:/Users/adayf/Desktop/Django/proyectoPrueba/reservas/templates/index.html")
-    #Luego lo leemos
-    plt= Template(doc_externo.read())
-    #Una vez cargado podemos cerrar el documento
-    doc_externo.close()
-    #Creamos el contexto,y añadimos un diccionario para añadirle valores que sustituiremos en la vista
-    #rooms=Habitacion.objects.filter(reservada=1)
+    plantilla=loader.get_template("index.html")
     todayNoFormat=datetime.today()
     today=todayNoFormat.strftime("%m/%d/%Y")
     numeroHabitaciones=Habitacion.objects.count()
     rooms = Reserva.objects.filter(fechaOut__gte=todayNoFormat)
-    ctx=Context({"reservas":rooms, "numHab":numeroHabitaciones, "numHabRes":(numeroHabitaciones- len(rooms)), "fecha":today})
-    #Renderizamos
-    documento=plt.render(ctx)
-
+    documento=plantilla.render({"reservas":rooms, "numHab":numeroHabitaciones, "numHabRes":(numeroHabitaciones- len(rooms)), "fecha":today})
     return HttpResponse(documento)
 
 def buscador(request):
@@ -35,9 +26,7 @@ def buscador(request):
 
 
 def resultadosBusqueda(request):
-    doc_externo=open("C:/Users/adayf/Desktop/Django/proyectoPrueba/reservas/templates/resultados.html")
-    plt= Template(doc_externo.read())
-    doc_externo.close()
+    plantilla=loader.get_template("resultados.html")   
     fechaIni=request.GET["fechaInicio"]
     fechaFin=request.GET["fechaFin"]
     personas=request.GET["personas"]
@@ -54,15 +43,13 @@ def resultadosBusqueda(request):
     for habitacion in habitacionesLibres:
         if habitacion.huespedes>=int(personas):
             habitaciones.append(habitacion)
-    ctx=Context({"exito":bien,"habLib":habitaciones, "numHab":len(habitaciones),"fechaIni":fechaIni, "fechaFin":fechaFin, "dias":dias})
-    documento=plt.render(ctx)
+    documento=plantilla.render({"exito":bien,"habLib":habitaciones, "numHab":len(habitaciones),"fechaIni":fechaIni, "fechaFin":fechaFin, "dias":dias})
 
     return HttpResponse(documento)
 
 def reservar(request):
-    doc_externo=open("C:/Users/adayf/Desktop/Django/proyectoPrueba/reservas/templates/reservar.html")
-    plt= Template(doc_externo.read())
-    doc_externo.close()
+    plantilla=loader.get_template("reservar.html")
+
     elecciones=request.GET.getlist("eleccion")
     habitaciones=[]
     precioTotal=0
@@ -75,8 +62,7 @@ def reservar(request):
         habitaciones.append(hab)
         precioTotal+=hab.precio*dias
 
-    ctx=Context({"habitaciones":habitaciones, "precioTotal":precioTotal,"fechaIni":fechaIni, "fechaFin":fechaFin,"dias":dias})
-    documento=plt.render(ctx)
+    documento=plantilla.render({"habitaciones":habitaciones, "precioTotal":precioTotal,"fechaIni":fechaIni, "fechaFin":fechaFin,"dias":dias})
 
     return HttpResponse(documento)
 
@@ -89,9 +75,7 @@ def calcular_dias(fechaIni, fechaFin):
     return dias 
 
 def crear_reserva(request):
-    doc_externo=open("C:/Users/adayf/Desktop/Django/proyectoPrueba/reservas/templates/exito.html")
-    plt= Template(doc_externo.read())
-    doc_externo.close()
+    plantilla=loader.get_template("exito.html")
     nuevo_cliente=request.GET.getlist("Contacto")
     obj, created = Cliente.objects.get_or_create(
         nombre=nuevo_cliente[0],
@@ -132,7 +116,6 @@ def crear_reserva(request):
     today=todayNoFormat.strftime("%m/%d/%Y")
     numeroHabitaciones=Habitacion.objects.count()
     rooms = Reserva.objects.filter(fechaOut__gte=todayNoFormat)
-    ctx=Context({"localizador":localizador, "exito":exito})
-    documento=plt.render(ctx)
+    documento=plantilla.render({"localizador":localizador, "exito":exito})
 
     return HttpResponse(documento)

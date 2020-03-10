@@ -55,7 +55,7 @@ ROOT_URLCONF = 'proyectoPrueba.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["C:/Users/adayf/Desktop/Django/proyectoPrueba/reservas/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
