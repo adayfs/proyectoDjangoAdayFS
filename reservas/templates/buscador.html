@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Pagina de reservas AFS</title>
+    </head>
+    <body>
+        <div class="container">
+        <h1>Buscador de reservas</h1>
+        <form action="/Buscador/" method ="GET">
+            <div class="col-md-4 mb-3">
+            <label for="fechaIn">Fecha entrada</label>
+            <input type="date" name="fechaInicio" id="fechaIn" class="form-control">
+            </div>
+            <div class="col-md-4 mb-3">
+            <label for="fechaFin">Fecha salida</label>
+            <input type="date" name="fechaFin" id="fechaFin" class="form-control">
+            </div>
+            <div class="col-md-4 mb-3">
+            <label for="huespedes">Num. personas</label>
+            <input type="number" name="personas" id="huespedes" min="1" max="4" class="form-control">
+            </div>
+            <div class="col-md-4 mb-3">
+            <input type="submit" class="btn btn-primary" value="Buscar">
+            </div>
+        </form>
+    </body>
+</html>

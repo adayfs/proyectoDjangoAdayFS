@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Pagina de reservas AFS</title>
+    </head>
+    <body>
+        <div class="container">        
+        {%if exito %}
+        <h3>Resultados de la busqueda para las fechas: </h3>
+        <h3>{{fechaIni}} / {{fechaFin}} - {{dias}} Dias</h3>
+            <h4>Habitaciones libres {{numHab}}</h4>
+            <form action="/Reservar/" method ="GET">
+                <div class="col-md-5 mb-4">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th></th>
+                                <th>Tipo</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>   
+                        {% for habitacion in habLib %}  
+                            <tr>  
+                                <th scope="row"><input type="checkbox" name="eleccion" value="{{habitacion.numeroHabitacion}}"></td>
+                                <td>{{habitacion.tipo}}</td>
+                                <td>{% widthratio habitacion.precio 1 dias %} &euro;</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>  
+                    </table> 
+                <div style="text-align: left;">                
+                    <input type="date" value={{fechaIni}} name=fechaIni hidden/>
+                    <input type="date" value={{fechaFin}} name=fechaFin hidden/>
+                    <input type="submit" class="btn btn-primary" value="Reservar">
+                </div>
+                </div>
+            </form>   
+        {% else %}
+            <h2>Has introducido mal las fechas</h2>
+        {%endif%}
+        </div>
+</body>
+</html>
